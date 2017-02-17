@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Table des matières</title>
+    <script type="text/javascript">
+        var toc = function() {
+            var toc = "";
+            var level = 0;
+
+            document.getElementById("content").innerHTML = document.getElementById("content").innerHTML.replace(/<h([\d])>([^<]+)<\/h([\d])>/gi,
+                function (str, openLevel, titleText, closeLevel) {
+                    //console.log(str, openLevel, titleText, closeLevel);
+                    if (openLevel != closeLevel) {
+                        return str;
+                    }
+
+                    if (openLevel > level) {
+                        toc += (new Array(openLevel - level + 1)).join("<ul>");
+                    }
+                    else if (openLevel < level) {
+                        toc += (new Array(level - openLevel + 1)).join("</ul>");
+                    }
+
+                    level = parseInt(openLevel);
+
+                    var anchor = titleText.replace(/ /g, "_");
+                    toc += "<li><a href=\"#" + anchor + "\">" + titleText + "</a></li>";
+
+                    return "<h" + openLevel + "><a name=\"" + anchor + "\">" + titleText + "</a></h" + closeLevel + ">";
+                }
+            );
+
+            if (level) {
+                toc += (new Array(level + 1)).join("</ul>");
+            }
+
+            document.getElementById("toc").innerHTML += toc;
+        };
+    </script>
+</head>
+<body>
+<div id="toc"></div>
+<div id="content">
+    <h1>Titre du document</h1>
+    <h2>Sous-titre 1</h2>
+    <h3>Sous-titre 1.1</h3>
+    <h4>Sous-titre 1.1.1</h4>
+    <h5>Sous-titre 1.1.1.1</h5>
+    <h6>Sous-titre 1.1.1.1.1</h6>
+    <h3>Sous-titre 1.2</h3>
+    <h4>Sous-titre 1.2.1</h4>
+    <h4>Sous-titre 1.2.2</h4>
+
+    <h2>Sous-titre 2</h2>
+    <h3>Sous-titre 2.1</h3>
+    <h3>Sous-titre 2.2</h3>
+    <h4>Sous-titre 2.2.1</h4>
+
+    <h2>Sous-titre 3</h2>
+    <h3>Sous-titre 3.1</h3>
+    <h4>Sous-titre 3.1.1</h4>
+    <h4>Sous-titre 3.1.2</h4>
+    <h3>Sous-titre 3.2</h3>
+    <h4>Sous-titre 3.2.1</h4>
+    <h5>Sous-titre 3.2.1.1</h5>
+    <h5>Sous-titre 3.2.1.2</h5>
+</div>
+</body>
+<script type="text/javascript">
+    toc();
+</script>
+</html>
